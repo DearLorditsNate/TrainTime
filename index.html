@@ -11,14 +11,102 @@
         crossorigin="anonymous">
 
     <!-- CSS Reset -->
-    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/reset.css" />
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="assets/css/reset.css" /> -->
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
+
 </head>
 <body>
-    <h1>test</h1>
+    <div class="container-fluid">
+<br>
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Train Time</h1>
+            <p class="lead">When is the next train coming? Keep track here!</p>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        Current Train Schedule
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Train Name</th>
+                                    <th scope="col">Destination</th>
+                                    <th scope="col">Frequency (min)</th>
+                                    <th scope="col">Next Arrival</th>
+                                    <th scope="col">Minutes Away</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Thomas</td>
+                                    <td>Los Angeles</td>
+                                    <td>120</td>
+                                    <td>5:00 PM</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>Georgia</td>
+                                    <td>Atlanta</td>
+                                    <td>30</td>
+                                    <td>10:00 PM</td>
+                                    <td>25</td>
+                                </tr>
+                                <tr>
+                                    <td>Chessie</td>
+                                    <td>Michigan</td>
+                                    <td>5</td>
+                                    <td>9:00 AM</td>
+                                    <td>3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+<br>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        Add Train
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="train-name">Train Name</label>
+                                <input type="text" class="form-control" id="train-name" placeholder="Enter train name">
+                            </div>
+                            <div class="form-group">
+                                <label for="destination">Destination</label>
+                                <input type="text" class="form-control" id="destination" placeholder="Enter train destination">
+                            </div>
+                            <div class="form-group">
+                                <label for="first-train-time">First Train Time</label>
+                                <input type="text" class="form-control" id="first-train-time" placeholder="HH:mm - military time">
+                            </div>
+                            <div class="form-group">
+                                <label for="frequency">Frequency</label>
+                                <input type="text" class="form-control" id="frequency" placeholder="Train frequency in minutes">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>    
+                    </div>
+                </div>
+            </div>
+        </div>
+<br>
+
+    </div>
     
 
 
