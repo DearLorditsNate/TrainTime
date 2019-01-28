@@ -40,19 +40,24 @@ $(document).ready(function() {
         var firstTrainTime = $("#first-train-time").val();
         var frequency = $("#frequency").val();
 
-        // Clear form fields
-        $("#train-name, #destination, #first-train-time, #frequency").val("");
+        if (!moment(firstTrainTime, "HH:mm").isValid()) {
+            alert("Please enter a time in the correct format.");
+            // Clear only time field
+            $("#first-train-time").val("").focus();
+        } else {
+            // Clear form fields
+            $("#train-name, #destination, #first-train-time, #frequency").val("");
 
-        // Post values to Firebase
-        var newTrain = database.ref("trainList").push({
-            trainName: trainName,
-            destination: destination,
-            firstTrainTime: firstTrainTime,
-            frequency: frequency
-        });
+            // Post values to Firebase
+            var newTrain = database.ref("trainList").push({
+                trainName: trainName,
+                destination: destination,
+                firstTrainTime: firstTrainTime,
+                frequency: frequency
+            });
+        }
 
-        console.log(newTrain.key);
-
+        console.log(firstTrainTime);
     });
 
     /*
@@ -61,7 +66,8 @@ $(document).ready(function() {
     =============================================
     */
 
-    database.ref().on("value", function(snapshot) {
+    // Listens for changes in Firebase | Updates DOM
+    database.ref().on("value", function (snapshot) {
         // Empty table to prevent dupes
         $("#table-body").empty();
 
@@ -75,7 +81,7 @@ $(document).ready(function() {
             var $name = $("<td>").text(thisTrain.trainName);
             var $destination = $("<td>").text(thisTrain.destination);
             var $frequency = $("<td>").text(thisTrain.frequency);
-            var $arrival = $("<td>").text("arrival time");
+            var $arrival = $("<td>").text(moment(thisTrain.firstTrainTime, "HH:mm").format("h:mm A"));
             var $minutes = $("<td>").text("minutes away");
 
             // Append table elements to the DOM
@@ -84,7 +90,7 @@ $(document).ready(function() {
             $("#table-body").append($tr);
 
         }
-    }, function(errorObject) {
+    }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
     });
 
