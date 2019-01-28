@@ -40,7 +40,7 @@ $(document).ready(function() {
         var firstTrainTime = $("#first-train-time").val();
         var frequency = $("#frequency").val();
 
-        if (!moment(firstTrainTime, "HH:mm").isValid()) {
+        if (!moment(firstTrainTime, "HH:mm").isValid() || firstTrainTime.length > 4) {
             alert("Please enter a time in the correct format.");
             // Clear only time field
             $("#first-train-time").val("").focus();
@@ -56,8 +56,6 @@ $(document).ready(function() {
                 frequency: frequency
             });
         }
-
-        console.log(firstTrainTime);
     });
 
     /*
