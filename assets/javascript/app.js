@@ -42,7 +42,7 @@ $(document).ready(function() {
 
         if (!moment(firstTrainTime, "HH:mm").isValid() || firstTrainTime.length > 4) {
             alert("Please enter a time in the correct format.");
-            // Clear only time field
+            // Clear only time field and focus
             $("#first-train-time").val("").focus();
         } else {
             // Clear form fields
