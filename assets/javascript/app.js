@@ -34,6 +34,7 @@ $(document).ready(function() {
         var firstTrainTime = $("#first-train-time").val();
         var frequency = $("#frequency").val();
 
+        // Check that time entry is valid format
         if (!moment(firstTrainTime, "HH:mm").isValid() || firstTrainTime.length !== 4) {
             alert("Please enter a time in the correct format.");
             // Clear only time field and focus
@@ -86,13 +87,17 @@ $(document).ready(function() {
                     nextTrain = moment(nextTrain, "HH:mm").add(thisTrain.frequency, "m").format("HH:mm");
                 }
             }
-            // If firstTrainTime is in the future, assign nextTrain value to that time
-            else {
-                nextTrain = moment(thisTrain.firstTrainTime, "HH:mm");
-            };
 
             // Calculate difference between next train and current time
             var minutesAway = moment(nextTrain, "HH:mm").diff(now, "minutes") + 1;
+
+            // If minutesAway is negative (a high frequency # caused the day to lap), add a day to the moment time-stamp
+            // This won't work if the frequency is so high it would cause the day to lap multiple times (i.e., the train only comes once every 3 days)
+            if (minutesAway < 0) {
+                nextTrain = moment(nextTrain, "HH:mm").add(1, "d");
+                // Recalculate minutesAway with the time-stamp changed
+                minutesAway = moment(nextTrain, "HH:mm").diff(now, "minutes") + 1;
+            }
 
             // Assign $arrival variable the value of nextTrain, formatted
             var $arrival = $("<td>").text(moment(nextTrain, "HH:mm").format("h:mm A"));
