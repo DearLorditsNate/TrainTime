@@ -20,12 +20,6 @@ $(document).ready(function() {
 
     /*
     =============================================
-    Global Variables
-    =============================================
-    */
-
-    /*
-    =============================================
     Click Handlers
     =============================================
     */
@@ -40,7 +34,7 @@ $(document).ready(function() {
         var firstTrainTime = $("#first-train-time").val();
         var frequency = $("#frequency").val();
 
-        if (!moment(firstTrainTime, "HH:mm").isValid() || firstTrainTime.length > 4) {
+        if (!moment(firstTrainTime, "HH:mm").isValid() || firstTrainTime.length !== 4) {
             alert("Please enter a time in the correct format.");
             // Clear only time field and focus
             $("#first-train-time").val("").focus();
@@ -79,8 +73,32 @@ $(document).ready(function() {
             var $name = $("<td>").text(thisTrain.trainName);
             var $destination = $("<td>").text(thisTrain.destination);
             var $frequency = $("<td>").text(thisTrain.frequency);
-            var $arrival = $("<td>").text(moment(thisTrain.firstTrainTime, "HH:mm").format("h:mm A"));
-            var $minutes = $("<td>").text("minutes away");
+
+            // Get a reference to the current time
+            var now = moment();
+
+            // Create starting time for nextTrain variable based on firstTrainTime
+            var nextTrain = moment(thisTrain.firstTrainTime, "HH:mm").format("HH:mm");
+
+            // If firstTrainTime is in the past, calculate number of trains that have passed and assign nextTrain value to the most immediate upcoming train time
+            if (moment(thisTrain.firstTrainTime, "HH:mm").diff(now, "minutes") < 0) {
+                for (var i = 0; i <= Math.abs(moment(thisTrain.firstTrainTime, "HH:mm").diff(now, "minutes") / thisTrain.frequency); i++) {
+                    nextTrain = moment(nextTrain, "HH:mm").add(thisTrain.frequency, "m").format("HH:mm");
+                }
+            }
+            // If firstTrainTime is in the future, assign nextTrain value to that time
+            else {
+                nextTrain = moment(thisTrain.firstTrainTime, "HH:mm");
+            };
+
+            // Calculate difference between next train and current time
+            var minutesAway = moment(nextTrain, "HH:mm").diff(now, "minutes") + 1;
+
+            // Assign $arrival variable the value of nextTrain, formatted
+            var $arrival = $("<td>").text(moment(nextTrain, "HH:mm").format("h:mm A"));
+
+            // Assign $minutes varialbe the value of minutesAway
+            var $minutes = $("<td>").text(minutesAway);
 
             // Append table elements to the DOM
             $tr.append($name).append($destination).append($frequency).append($arrival).append($minutes);
@@ -91,22 +109,5 @@ $(document).ready(function() {
     }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
     });
-
-
-
-    /*
-    =============================================
-    Function Calls
-    =============================================
-    */
-
-    // Tests
-    // database.ref().set({
-    //     test: "first test",
-    //     secondTest: ["first array item", "second array item"]
-    // });
-
-    // $("#table-body").empty();
-
 
 });
